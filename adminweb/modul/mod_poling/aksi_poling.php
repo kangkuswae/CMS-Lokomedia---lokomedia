@@ -2,18 +2,18 @@
 session_start();
 include "../../../config/koneksi.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=isset($_GET['act']) ? $_GET['act']:'';
 
 // Hapus poling
 if ($module=='poling' AND $act=='hapus'){
-  mysql_query("DELETE FROM poling WHERE id_poling='$_GET[id]'");
+  mysqli_query($conn,"DELETE FROM poling WHERE id_poling='$_GET[id]'");
   header('location:../../media.php?module='.$module);
 }
 
 // Input poling
 elseif ($module=='poling' AND $act=='input'){
-  mysql_query("INSERT INTO poling(pilihan,
+  mysqli_query($conn,"INSERT INTO poling(pilihan,
                                   aktif) 
 	                       VALUES('$_POST[pilihan]',
                                 '$_POST[aktif]')");
@@ -22,7 +22,7 @@ elseif ($module=='poling' AND $act=='input'){
 
 // Update poling
 elseif ($module=='poling' AND $act=='update'){
-  mysql_query("UPDATE poling SET pilihan = '$_POST[pilihan]',
+  mysqli_query($conn,"UPDATE poling SET pilihan = '$_POST[pilihan]',
                                  aktif   = '$_POST[aktif]'  
                           WHERE id_poling = '$_POST[id]'");
   header('location:../../media.php?module='.$module);

@@ -1,10 +1,10 @@
 <?php
 $aksi="modul/mod_profil/aksi_profil.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Komentar
   default:
-    $sql  = mysql_query("SELECT * FROM modul WHERE id_modul='37'");
-    $r    = mysql_fetch_array($sql);
+    $sql  = mysqli_query($conn,"SELECT * FROM modul WHERE id_modul='37'");
+    $r    = mysqli_fetch_array($sql);
 
     echo "<h2>Profil</h2>
           <form method=POST enctype='multipart/form-data' action=$aksi?module=profil&act=update>

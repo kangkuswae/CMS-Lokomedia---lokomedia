@@ -4,8 +4,8 @@ include "../../../config/koneksi.php";
 include "../../../config/fungsi_thumb.php";
 
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=isset($_GET['act']) ? $_GET['act']:'';
 
 // Update profil
 if ($module=='profil' AND $act=='update'){
@@ -16,12 +16,12 @@ if ($module=='profil' AND $act=='update'){
   if (!empty($lokasi_file)){
     UploadBanner($nama_file);
     move_uploaded_file($lokasi_file,"foto_banner/$nama_file");
-    mysql_query("UPDATE modul SET static_content = '$_POST[isi]',
+    mysqli_query($conn,"UPDATE modul SET static_content = '$_POST[isi]',
                                   gambar         = '$nama_file'    
                             WHERE id_modul       = '$_POST[id]'");
   }
   else{
-    mysql_query("UPDATE modul SET static_content = '$_POST[isi]'
+    mysqli_query($conn,"UPDATE modul SET static_content = '$_POST[isi]'
                             WHERE id_modul       = '$_POST[id]'");
   }
   header('location:../../media.php?module='.$module);

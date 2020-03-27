@@ -1,8 +1,8 @@
 <?php
-$sql = mysql_query("select tag from berita where id_berita='$_GET[id]'");
-$j   = mysql_fetch_array($sql);
+$sql = mysqli_query($conn,"select tag from berita where id_berita='$_GET[id]'");
+$j   = mysqli_fetch_array($sql);
 
-if (ISSET($_GET[id])){
+if (ISSET($_GET['id'])){
 		echo "$j[tag]";
 }
 else{

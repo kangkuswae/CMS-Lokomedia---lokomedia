@@ -2,12 +2,12 @@
 class Paging{
 // Fungsi untuk mencek halaman dan posisi data
 function cariPosisi($batas){
-if(empty($_GET[halaman])){
+if(empty($_GET['halaman'])){
 	$posisi=0;
-	$_GET[halaman]=1;
+	$_GET['halaman']=1;
 }
 else{
-	$posisi = ($_GET[halaman]-1) * $batas;
+	$posisi = ($_GET['halaman']-1) * $batas;
 }
 return $posisi;
 }

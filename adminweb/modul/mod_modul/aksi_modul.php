@@ -2,24 +2,24 @@
 session_start();
 include "../../../config/koneksi.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=isset($_GET['act']) ? $_GET['act']:'';
 
 // Hapus modul
 if ($module=='modul' AND $act=='hapus'){
-  mysql_query("DELETE FROM modul WHERE id_modul='$_GET[id]'");
+  mysqli_query($conn,"DELETE FROM modul WHERE id_modul='$_GET[id]'");
   header('location:../../media.php?module='.$module);
 }
 
 // Input modul
 elseif ($module=='modul' AND $act=='input'){
   // Cari angka urutan terakhir
-  $u=mysql_query("SELECT urutan FROM modul ORDER by urutan DESC");
-  $d=mysql_fetch_array($u);
+  $u=mysqli_query($conn,"SELECT urutan FROM modul ORDER by urutan DESC");
+  $d=mysqli_fetch_array($u);
   $urutan=$d[urutan]+1;
   
   // Input data modul
-  mysql_query("INSERT INTO modul(nama_modul,
+  mysqli_query($conn,"INSERT INTO modul(nama_modul,
                                  link,
                                  publish,
                                  aktif,
@@ -36,7 +36,7 @@ elseif ($module=='modul' AND $act=='input'){
 
 // Update modul
 elseif ($module=='modul' AND $act=='update'){
-  mysql_query("UPDATE modul SET nama_modul = '$_POST[nama_modul]',
+  mysqli_query($conn,"UPDATE modul SET nama_modul = '$_POST[nama_modul]',
                                 link       = '$_POST[link]',
                                 publish    = '$_POST[publish]',
                                 aktif      = '$_POST[aktif]',

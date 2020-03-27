@@ -31,8 +31,8 @@
 		<li><a href="index.php"><span>Home</span></a></li>
         
         <?php
-		$menu=mysql_query("SELECT * FROM modul WHERE publish='Y' ORDER BY urutan");
-		while($m=mysql_fetch_array($menu)){
+		$menu=mysqli_query($conn,"SELECT * FROM modul WHERE publish='Y' ORDER BY urutan");
+		while($m=mysqli_fetch_array($menu)){
 			echo "<li><a href=$m[link_seo]><span>$m[nama_modul]</span></a></li>";
 		}
 		?>

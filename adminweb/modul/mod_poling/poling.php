@@ -1,6 +1,6 @@
 <?php
 $aksi="modul/mod_poling/aksi_poling.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Modul
   default:
     echo "<h2>Poling</h2>
@@ -9,8 +9,8 @@ switch($_GET[act]){
           <tr><th>no</th><th>pilihan</th><th>rating</th><th>aktif</th><th>aksi</th></tr>";
           
     $no = 1;
-    $tampil=mysql_query("SELECT * FROM poling ORDER BY id_poling DESC");
-    while ($r=mysql_fetch_array($tampil)){
+    $tampil=mysqli_query($conn,"SELECT * FROM poling ORDER BY id_poling DESC");
+    while ($r=mysqli_fetch_array($tampil)){
       echo "<tr>
             <td>$no</td>
             <td>$r[pilihan]</td>
@@ -37,15 +37,15 @@ switch($_GET[act]){
      break;
  
   case "editpoling":
-    $edit = mysql_query("SELECT * FROM poling WHERE id_poling='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
+    $edit = mysqli_query($conn,"SELECT * FROM poling WHERE id_poling='$_GET[id]'");
+    $r    = mysqli_fetch_array($edit);
 
     echo "<h2>Edit Poling</h2>
           <form method=POST action=$aksi?module=poling&act=update>
           <input type=hidden name=id value='$r[id_poling]'>
           <table>
           <tr><td>Pilihan</td> <td> : <input type=text name='pilihan' value='$r[pilihan]'></td></tr>";
-    if ($r[aktif]=='Y'){
+    if ($r['aktif']=='Y'){
       echo "<tr><td>Aktif</td> <td> : <input type=radio name='aktif' value='Y' checked>Y  
                                       <input type=radio name='aktif' value='N'> N</td></tr>";
     }

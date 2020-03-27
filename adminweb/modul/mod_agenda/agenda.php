@@ -1,24 +1,24 @@
 <?php
 $aksi="modul/mod_agenda/aksi_agenda.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Agenda
   default:
     echo "<h2>Agenda</h2>
           <input type=button value='Tambah Agenda' onclick=location.href='?module=agenda&act=tambahagenda'>
           <table>
           <tr><th>no</th><th>tema</th><th>tgl. mulai</th><th>tgl. selesai</th><th>aksi</th></tr>";
-    if ($_SESSION[leveluser]=='admin'){
-      $tampil=mysql_query("SELECT * FROM agenda ORDER BY id_agenda DESC");
+    if ($_SESSION['leveluser']=='admin'){
+      $tampil=mysqli_query($conn,"SELECT * FROM agenda ORDER BY id_agenda DESC");
     }
     else{
-      $tampil=mysql_query("SELECT * FROM agenda 
+      $tampil=mysqli_query($conn,"SELECT * FROM agenda 
                            WHERE username='$_SESSION[namauser]'       
                            ORDER BY id_agenda DESC");
     }
     $no=1;
-    while ($r=mysql_fetch_array($tampil)){
-      $tgl_mulai   = tgl_indo($r[tgl_mulai]);
-      $tgl_selesai = tgl_indo($r[tgl_selesai]);
+    while ($r=mysqli_fetch_array($tampil)){
+      $tgl_mulai   = tgl_indo($r['tgl_mulai']);
+      $tgl_selesai = tgl_indo($r['tgl_selesai']);
       echo "<tr><td>$no</td>
                 <td width=220>$r[tema]</td>
                 <td>$tgl_mulai</td>
@@ -61,8 +61,8 @@ switch($_GET[act]){
   
 
   case "editagenda":
-    $edit = mysql_query("SELECT * FROM agenda WHERE id_agenda='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
+    $edit = mysqli_query($conn,"SELECT * FROM agenda WHERE id_agenda='$_GET[id]'");
+    $r    = mysqli_fetch_array($edit);
 
     echo "<h2>Edit Agenda</h2>
           <form method=POST action=$aksi?module=agenda&act=update>

@@ -5,12 +5,12 @@ include "../../../config/library.php";
 include "../../../config/fungsi_thumb.php";
 include "../../../config/fungsi_seo.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=isset($_GET['act']) ? $_GET['act']:'';
 
 // Hapus berita
 if ($module=='berita' AND $act=='hapus'){
-  mysql_query("DELETE FROM berita WHERE id_berita='$_GET[id]'");
+  mysqli_query($conn,"DELETE FROM berita WHERE id_berita='$_GET[id]'");
   header('location:../../media.php?module='.$module);
 }
 
@@ -31,7 +31,7 @@ elseif ($module=='berita' AND $act=='input'){
   if (!empty($lokasi_file)){
     UploadImage($nama_file_unik);
 
-    mysql_query("INSERT INTO berita(judul,
+    mysqli_query($conn,"INSERT INTO berita(judul,
                                     judul_seo,
                                     id_kategori,
                                     username,
@@ -53,7 +53,7 @@ elseif ($module=='berita' AND $act=='input'){
                                    '$nama_file_unik')");
   }
   else{
-    mysql_query("INSERT INTO berita(judul,
+    mysqli_query($conn,"INSERT INTO berita(judul,
                                     judul_seo, 
                                     id_kategori,
                                     username,
@@ -75,7 +75,7 @@ elseif ($module=='berita' AND $act=='input'){
   
   $jml=count($tag_seo);
   for($i=0;$i<$jml;$i++){
-    mysql_query("UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
+    mysqli_query($conn,"UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
   }
   header('location:../../media.php?module='.$module);
 }
@@ -94,7 +94,7 @@ elseif ($module=='berita' AND $act=='update'){
 
   // Apabila gambar tidak diganti
   if (empty($lokasi_file)){
-    mysql_query("UPDATE berita SET judul       = '$_POST[judul]',
+    mysqli_query($conn,"UPDATE berita SET judul       = '$_POST[judul]',
                                    judul_seo   = '$judul_seo', 
                                    id_kategori = '$_POST[kategori]',
                                    tag         = '$tag',
@@ -103,7 +103,7 @@ elseif ($module=='berita' AND $act=='update'){
   }
   else{
     UploadImage($nama_file_unik);
-    mysql_query("UPDATE berita SET judul       = '$_POST[judul]',
+    mysqli_query($conn,"UPDATE berita SET judul       = '$_POST[judul]',
                                    judul_seo   = '$judul_seo', 
                                    id_kategori = '$_POST[kategori]',
                                    tag         = '$tag',

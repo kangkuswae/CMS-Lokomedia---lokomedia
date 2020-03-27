@@ -2,19 +2,19 @@
 session_start();
 include "../../../config/koneksi.php";
 
-$module=$_GET[module];
-$act=$_GET[act];
+$module=$_GET['module'];
+$act=isset($_GET['act']) ? $_GET['act']:'';
 
 // Hapus user
 if ($module=='user' AND $act=='hapus'){
-  mysql_query("DELETE FROM users WHERE username='$_GET[id]'");
+  mysqli_query($conn,"DELETE FROM users WHERE username='$_GET[id]'");
   header('location:../../media.php?module='.$module);
 }
 
 // Input user
 elseif ($module=='user' AND $act=='input'){
   $pass=md5($_POST[password]);
-  mysql_query("INSERT INTO users(username,
+  mysqli_query($conn,"INSERT INTO users(username,
                                  password,
                                  nama_lengkap,
                                  email, 
@@ -30,7 +30,7 @@ elseif ($module=='user' AND $act=='input'){
 // Update user
 elseif ($module=='user' AND $act=='update'){
   if (empty($_POST[password])) {
-    mysql_query("UPDATE users SET username       = '$_POST[username]',
+    mysqli_query($conn,"UPDATE users SET username       = '$_POST[username]',
                                   nama_lengkap   = '$_POST[nama_lengkap]',
                                   email          = '$_POST[email]',
                                   blokir         = '$_POST[blokir]',  
@@ -40,7 +40,7 @@ elseif ($module=='user' AND $act=='update'){
   // Apabila password diubah
   else{
     $pass=md5($_POST[password]);
-    mysql_query("UPDATE users SET username    = '$_POST[username]',
+    mysqli_query($conn,"UPDATE users SET username    = '$_POST[username]',
                                  password        = '$pass',
                                  nama_lengkap    = '$_POST[nama_lengkap]',
                                  email           = '$_POST[email]',  

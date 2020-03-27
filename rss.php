@@ -1,7 +1,7 @@
 <?php
 include "config/koneksi.php";
 
-$sql = mysql_query("SELECT * FROM berita ORDER BY id_berita DESC LIMIT 5");
+$sql = mysqli_query($conn,"SELECT * FROM berita ORDER BY id_berita DESC LIMIT 5");
 
 $file = fopen("rss.xml", "w");
 
@@ -13,7 +13,7 @@ fwrite($file, '<?xml version="1.0"?>
 <description>Feed Description</description> 
 <language>en-us</language>');
 
-while($r=mysql_fetch_array($sql)){
+while($r=mysqli_fetch_array($sql)){
   $isi_berita = htmlentities(strip_tags(nl2br($r[isi_berita]))); // membuat paragraf pada isi berita dan mengabaikan tag html
   $isi   = substr($isi_berita,0,220); // ambil sebanyak 220 karakter
   $isi   = substr($isi_berita,0,strrpos($isi," ")); // potong per spasi kalimat

@@ -1,6 +1,6 @@
 <?php
 $aksi="modul/mod_tag/aksi_tag.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Tag
   default:
     echo "<h2>Kategori</h2>
@@ -8,9 +8,9 @@ switch($_GET[act]){
           onclick=\"window.location.href='?module=tag&act=tambahtag';\">
           <table>
           <tr><th>no</th><th>nama tag</th><th>aksi</th></tr>"; 
-    $tampil=mysql_query("SELECT * FROM tag ORDER BY id_tag DESC");
+    $tampil=mysqli_query($conn,"SELECT * FROM tag ORDER BY id_tag DESC");
     $no=1;
-    while ($r=mysql_fetch_array($tampil)){
+    while ($r=mysqli_fetch_array($tampil)){
        echo "<tr><td>$no</td>
              <td>$r[nama_tag]</td>
              <td><a href=?module=tag&act=edittag&id=$r[id_tag]>Edit</a> | 
@@ -34,8 +34,8 @@ switch($_GET[act]){
   
   // Form Edit Kategori  
   case "edittag":
-    $edit=mysql_query("SELECT * FROM tag WHERE id_tag='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
+    $edit=mysqli_query($conn,"SELECT * FROM tag WHERE id_tag='$_GET[id]'");
+    $r=mysqli_fetch_array($edit);
 
     echo "<h2>Edit Tag</h2>
           <form method=POST action=$aksi?module=tag&act=update>

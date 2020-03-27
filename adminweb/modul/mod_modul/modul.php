@@ -1,14 +1,14 @@
 <?php
 $aksi="modul/mod_modul/aksi_modul.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Modul
   default:
     echo "<h2>Modul</h2>
           <input type=button value='Tambah Modul' onclick=\"window.location.href='?module=modul&act=tambahmodul';\">
           <table>
           <tr><th>no</th><th>nama modul</th><th>link</th><th>publish</th><th>aktif</th><th>status</th><th>aksi</th></tr>";
-    $tampil=mysql_query("SELECT * FROM modul ORDER BY urutan");
-    while ($r=mysql_fetch_array($tampil)){
+    $tampil=mysqli_query($conn,"SELECT * FROM modul ORDER BY urutan");
+    while ($r=mysqli_fetch_array($tampil)){
       echo "<tr><td>$r[urutan]</td>
             <td>$r[nama_modul]</td>
             <td><a href=$r[link]>$r[link]</a></td>
@@ -41,8 +41,8 @@ switch($_GET[act]){
      break;
  
   case "editmodul":
-    $edit = mysql_query("SELECT * FROM modul WHERE id_modul='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
+    $edit = mysqli_query($conn,"SELECT * FROM modul WHERE id_modul='$_GET[id]'");
+    $r    = mysqli_fetch_array($edit);
 
     echo "<h2>Edit Modul</h2>
           <form method=POST action=$aksi?module=modul&act=update>
@@ -50,7 +50,7 @@ switch($_GET[act]){
           <table>
           <tr><td>Nama Modul</td>     <td> : <input type=text name='nama_modul' value='$r[nama_modul]'></td></tr>
           <tr><td>Link</td>     <td> : <input type=text name='link' size=30 value='$r[link]'></td></tr>";
-    if ($r[publish]=='Y'){
+    if ($r['publish']=='Y'){
       echo "<tr><td>Publish</td> <td> : <input type=radio name='publish' value='Y' checked>Y  
                                         <input type=radio name='publish' value='N'> N</td></tr>";
     }
@@ -58,7 +58,7 @@ switch($_GET[act]){
       echo "<tr><td>Publish</td> <td> : <input type=radio name='publish' value='Y'>Y  
                                         <input type=radio name='publish' value='N' checked>N</td></tr>";
     }
-    if ($r[aktif]=='Y'){
+    if ($r['aktif']=='Y'){
       echo "<tr><td>Aktif</td> <td> : <input type=radio name='aktif' value='Y' checked>Y  
                                       <input type=radio name='aktif' value='N'> N</td></tr>";
     }
@@ -66,7 +66,7 @@ switch($_GET[act]){
       echo "<tr><td>Aktif</td> <td> : <input type=radio name='aktif' value='Y'>Y  
                                       <input type=radio name='aktif' value='N' checked>N</td></tr>";
     }
-    if ($r[status]=='user'){
+    if ($r['status']=='user'){
       echo "<tr><td>Status</td> <td> : <input type=radio name='status' value='user' checked>user  
                                        <input type=radio name='status' value='admin'> admin</td></tr>";
     }

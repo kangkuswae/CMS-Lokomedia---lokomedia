@@ -1,6 +1,6 @@
 <?php
 $aksi="modul/mod_komentar/aksi_komentar.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil Komentar
   default:
     echo "<h2>Komentar</h2>
@@ -11,10 +11,10 @@ switch($_GET[act]){
     $batas  = 10;
     $posisi = $p->cariPosisi($batas);
 
-    $tampil=mysql_query("SELECT * FROM komentar ORDER BY id_komentar DESC LIMIT $posisi,$batas");
+    $tampil=mysqli_query($conn,"SELECT * FROM komentar ORDER BY id_komentar DESC LIMIT $posisi,$batas");
 
     $no = $posisi+1;
-    while ($r=mysql_fetch_array($tampil)){
+    while ($r=mysqli_fetch_array($tampil)){
       echo "<tr><td>$no</td>
                 <td width=80>$r[nama_komentar]</td>
                 <td width=290>$r[isi_komentar]</td>
@@ -25,17 +25,17 @@ switch($_GET[act]){
       $no++;
     }
     echo "</table>";
-    $jmldata=mysql_num_rows(mysql_query("SELECT * FROM komentar"));
+    $jmldata=mysqli_num_rows(mysqli_query($conn,"SELECT * FROM komentar"));
     $jmlhalaman  = $p->jumlahHalaman($jmldata, $batas);
-    $linkHalaman = $p->navHalaman($_GET[halaman], $jmlhalaman);
+    $linkHalaman = $p->navHalaman($_GET['halaman'], $jmlhalaman);
 
     echo "<div id=paging>Hal: $linkHalaman</div><br>";
     break;
   
   case "editkomentar":
-    $edit = mysql_query("SELECT * FROM komentar WHERE id_komentar='$_GET[id]'");
-    $r    = mysql_fetch_array($edit);
-    $isi_komentar = nl2br($r[isi_komentar]);
+    $edit = mysqli_query($conn,"SELECT * FROM komentar WHERE id_komentar='$_GET[id]'");
+    $r    = mysqli_fetch_array($edit);
+    $isi_komentar = nl2br($r['isi_komentar']);
 
     echo "<h2>Edit Komentar</h2>
           <form method=POST enctype='multipart/form-data' action=$aksi?module=komentar&act=update>
@@ -45,7 +45,7 @@ switch($_GET[act]){
           <tr><td>Website</td><td>  : <input type=text name='url' size=30 value='$r[url]'></td></tr>
           <tr><td>Isi Komentar</td><td> <textarea name=isi_komentar style='width: 400px; height: 100px;'>$isi_komentar</textarea></td></tr>";
 
-    if ($r[aktif]=='Y'){
+    if ($r['aktif']=='Y'){
       echo "<tr><td>Aktif</td> <td> : <input type=radio name='aktif' value='Y' checked>Y  
                                       <input type=radio name='aktif' value='N'> N</td></tr>";
     }

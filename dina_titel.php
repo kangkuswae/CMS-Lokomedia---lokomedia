@@ -1,8 +1,9 @@
 <?php
-$sql = mysql_query("select judul from berita where id_berita='$_GET[id]'");
-$j   = mysql_fetch_array($sql);
+$id = isset($_GET['id']);
+$sql = mysqli_query($conn,"select judul from berita where id_berita='$id'");
+$j   = mysqli_fetch_array($sql);
 
-if (ISSET($_GET[id])){
+if (ISSET($_GET['id'])){
 		echo "$j[judul]";
 }
 else{

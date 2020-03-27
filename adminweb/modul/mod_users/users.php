@@ -1,16 +1,16 @@
 <?php
-if ($_SESSION[leveluser]=='admin'){
+if ($_SESSION['leveluser']=='admin'){
 $aksi="modul/mod_users/aksi_users.php";
-switch($_GET[act]){
+switch(isset($_GET['act']) ? $_GET['act']:''){
   // Tampil User
   default:
     echo "<h2>User</h2>
           <input type=button value='Tambah User' onclick=\"window.location.href='?module=user&act=tambahuser';\">
           <table>
           <tr><th>no</th><th>username</th><th>nama lengkap</th><th>email</th><th>No.Telp/HP</th><th>Blokir</th><th>aksi</th></tr>"; 
-    $tampil=mysql_query("SELECT * FROM users ORDER BY username");
+    $tampil=mysqli_query($conn,"SELECT * FROM users ORDER BY username");
     $no=1;
-    while ($r=mysql_fetch_array($tampil)){
+    while ($r=mysqli_fetch_array($tampil)){
        echo "<tr><td>$no</td>
              <td>$r[username]</td>
              <td>$r[nama_lengkap]</td>
@@ -40,8 +40,8 @@ switch($_GET[act]){
      break;
     
   case "edituser":
-    $edit=mysql_query("SELECT * FROM users WHERE username='$_GET[id]'");
-    $r=mysql_fetch_array($edit);
+    $edit=mysqli_query($conn,"SELECT * FROM users WHERE username='$_GET[id]'");
+    $r=mysqli_fetch_array($edit);
 
     echo "<h2>Edit User</h2>
           <form method=POST action=$aksi?module=user&act=update>
@@ -53,7 +53,7 @@ switch($_GET[act]){
           <tr><td>E-mail</td>       <td> : <input type=text name='email' size=30 value='$r[email]'></td></tr>
           <tr><td>No.Telp/HP</td>   <td> : <input type=text name='no_telp' size=30 value='$r[no_telp]'></td></tr>";
 
-    if ($r[blokir]=='N'){
+    if ($r['blokir']=='N'){
       echo "<tr><td>Blokir</td>     <td> : <input type=radio name='blokir' value='Y'> Y   
                                            <input type=radio name='blokir' value='N' checked> N </td></tr>";
     }
